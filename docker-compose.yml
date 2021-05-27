@@ -40,7 +40,7 @@ services:
     zuul-gateway:
         image: deepsarkars/zuul-gateway:v1
         ports: 
-            - "8888:8888"
+            - "8888:5000"
         restart: always
         environment:
             EUREKA_HOST: eureka-server
