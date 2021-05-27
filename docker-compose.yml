@@ -1,0 +1,56 @@
+
+version: '3.7'
+services: 
+   
+    eureka-server:
+        image: deepsarkars/eureka-discovery-server:v1
+        ports: 
+            - "8761:8761"
+        restart: always
+       
+        networks:
+            - app-network
+    
+    loan-service:
+        image: deepsarkars/loan:v1
+        ports: 
+            - "5200:5200"
+        restart: always
+        environment:
+            EUREKA_HOST: eureka-server
+                
+        depends_on:
+            - eureka-server
+        networks:
+            - app-network
+ 
+    account-service:
+        image: deepsarkars/account:v1
+        ports: 
+            - "5100:5100"
+        restart: always
+        environment:
+            EUREKA_HOST: eureka-server
+        
+        depends_on:
+            - eureka-server
+        networks:
+            - app-network
+
+    zuul-gateway:
+        image: deepsarkars/zuul-gateway:v1
+        ports: 
+            - "8888:8888"
+        restart: always
+        environment:
+            EUREKA_HOST: eureka-server
+        depends_on:
+            - eureka-server
+        networks:
+            - app-network
+ 
+# Networks to be created to facilitate communication between containers
+networks:
+    app-network:  
+    
+
